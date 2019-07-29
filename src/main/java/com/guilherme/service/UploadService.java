@@ -35,8 +35,9 @@ public class UploadService {
         List<RelatorioDTO> relatoriosDTO = new ArrayList<RelatorioDTO>();
         RelatorioDTO relatorioDTO = null;
 		try (PDDocument document = PDDocument.load(
-				new File(fileStorageService.getFileStorageLocation().toString() + "\\" + file.getOriginalFilename()))) {
+				new File(fileStorageService.getFileStorageLocation().toString() + "/" + file.getOriginalFilename()))) {
 			document.getClass();
+
 			if (!document.isEncrypted()) {
 				PDFTextStripper tStripper = new PDFTextStripper();
 				String pdfFileInText = tStripper.getText(document);
@@ -313,7 +314,13 @@ public class UploadService {
 
 	public void inserirBd(List<RelatorioEntity> relatorios, RelatorioRepository repository) {
 		List<RelatorioEntity> relatorioDao = relatorios;
-
+		System.out.println("inserindo...");
+		System.out.println("Tamanho : " + relatorioDao.size());
+		try {
 		repository.saveAll(relatorioDao);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println("inseriu.");
 	}
 }
